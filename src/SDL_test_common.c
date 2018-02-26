@@ -971,7 +971,8 @@ SDLTest_CommonInit(SDLTest_CommonState * state)
 
             if (!state->skip_renderer
                 && (state->renderdriver
-                    || !(state->window_flags & (SDL_WINDOW_OPENGL | SDL_WINDOW_VULKAN)))) {
+                    //|| !(state->window_flags & (SDL_WINDOW_OPENGL | SDL_WINDOW_VULKAN)))) {
+                    || !(state->window_flags & (SDL_WINDOW_OPENGL)))) {
                 m = -1;
                 if (state->renderdriver) {
                     SDL_RendererInfo info;
