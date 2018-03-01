@@ -12,4 +12,6 @@ project(NJLIC)
 # 
 # install(FILES ${SOURCE_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/src )
 # install(FILES ${INCLUDE_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
+
+include(CMakeDependentOption)
 include(GNUInstallDirs)
