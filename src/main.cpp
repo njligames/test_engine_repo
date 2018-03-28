@@ -21,7 +21,6 @@
 #endif
 
 #include "SDL_test_common.h"
-#include "FPS.h"
 
 #define NUM_OBJECTS 100
 
@@ -35,7 +34,6 @@ static int current_color = 255;
 static SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
 
 int done;
-FPS fps;
 
 void
 DrawPoints(SDL_Renderer * renderer)
@@ -177,14 +175,23 @@ DrawRects(SDL_Renderer * renderer)
     }
 }
 
+double clockToMilliseconds(clock_t ticks){
+    // units/(units/time) => time (seconds) * 1000 = milliseconds
+    return (ticks/(double)CLOCKS_PER_SEC)*1000.0;
+}
+
+clock_t deltaTime = 0;
+unsigned int frames = 0;
+double  frameRate = 30;
+double  averageFrameTimeMilliseconds = 33.333;
+
 void
 loop()
 {
     int i;
     SDL_Event event;
 
-    fps.update();
-    printf("fps %f\n" fps.get());
+    clock_t beginFrame = clock();
 
     /* Check for events */
     while (SDL_PollEvent(&event)) {
@@ -203,6 +210,25 @@ loop()
 
         SDL_RenderPresent(renderer);
     }
+
+    clock_t endFrame = clock();
+
+    deltaTime += endFrame - beginFrame;
+    frames ++;
+
+    //if you really want FPS
+    if( clockToMilliseconds(deltaTime)>1000.0){ //every second
+        frameRate = (double)frames*0.5 +  frameRate*0.5; //more stable
+        frames = 0;
+        deltaTime -= CLOCKS_PER_SEC;
+        averageFrameTimeMilliseconds  = 1000.0/(frameRate==0?0.001:frameRate);
+
+        if(vsync)
+            std::cout<<"FrameTime was:"<<averageFrameTimeMilliseconds<<std::endl;
+        else
+           std::cout<<"CPU time was:"<<averageFrameTimeMilliseconds<<std::endl;
+    }
+
 #ifdef __EMSCRIPTEN__
     if (done) {
         emscripten_cancel_main_loop();
