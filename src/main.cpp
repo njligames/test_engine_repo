@@ -263,10 +263,6 @@ main(int argc, char *argv[])
         i += consumed;
     }
 
-#ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(loop, 0, 1);
-#endif
-
     if (!SDLTest_CommonInit(state)) {
         return 2;
     }
@@ -286,7 +282,9 @@ main(int argc, char *argv[])
     then = SDL_GetTicks();
     done = 0;
 
-#ifndef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(loop, 0, 1);
+#else
     while (!done) {
         ++frames;
         loop();
