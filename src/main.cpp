@@ -176,24 +176,14 @@ DrawRects(SDL_Renderer * renderer)
     }
 }
 
-double clockToMilliseconds(clock_t ticks){
-    // units/(units/time) => time (seconds) * 1000 = milliseconds
-    return (ticks/(double)CLOCKS_PER_SEC)*1000.0;
-}
-
-clock_t deltaTime = 0;
-unsigned int frames = 0;
-double  frameRate = 30;
-double  averageFrameTimeMilliseconds = 33.333;
-int vsync = 0;
-
 void
 loop()
 {
     int i;
     SDL_Event event;
 
-    clock_t beginFrame = clock();
+    Uint32 then, now, frames=1;
+    then = SDL_GetTicks();
 
     /* Check for events */
     while (SDL_PollEvent(&event)) {
@@ -213,22 +203,11 @@ loop()
         SDL_RenderPresent(renderer);
     }
 
-    clock_t endFrame = clock();
-
-    deltaTime += endFrame - beginFrame;
-    frames ++;
-
-    //if you really want FPS
-    if( clockToMilliseconds(deltaTime)>1000.0){ //every second
-        frameRate = (double)frames*0.5 +  frameRate*0.5; //more stable
-        frames = 0;
-        deltaTime -= CLOCKS_PER_SEC;
-        averageFrameTimeMilliseconds  = 1000.0/(frameRate==0?0.001:frameRate);
-
-        if(vsync)
-            std::cout<<"FrameTime was:"<<averageFrameTimeMilliseconds<<std::endl;
-        else
-           std::cout<<"CPU time was:"<<averageFrameTimeMilliseconds<<std::endl;
+    /* Print out some timing information */
+    now = SDL_GetTicks();
+    if (now > then) {
+        double fps = ((double) frames * 1000) / (now - then);
+        SDL_Log("%2.2f frames per second\n", fps);
     }
 
 #ifdef __EMSCRIPTEN__
