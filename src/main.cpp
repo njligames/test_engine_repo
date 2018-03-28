@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <iostream>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten/emscripten.h>
@@ -184,6 +185,7 @@ clock_t deltaTime = 0;
 unsigned int frames = 0;
 double  frameRate = 30;
 double  averageFrameTimeMilliseconds = 33.333;
+int vsync = 0;
 
 void
 loop()
