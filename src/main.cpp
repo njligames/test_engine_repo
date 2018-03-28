@@ -21,6 +21,7 @@
 #endif
 
 #include "SDL_test_common.h"
+#include "FPS.h"
 
 #define NUM_OBJECTS 100
 
@@ -34,6 +35,7 @@ static int current_color = 255;
 static SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
 
 int done;
+FPS fps;
 
 void
 DrawPoints(SDL_Renderer * renderer)
@@ -180,6 +182,9 @@ loop()
 {
     int i;
     SDL_Event event;
+
+    fps.update();
+    printf("fps %f\n" fps.get());
 
     /* Check for events */
     while (SDL_PollEvent(&event)) {
