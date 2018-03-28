@@ -234,6 +234,7 @@ main(int argc, char *argv[])
     if (!state) {
         return 1;
     }
+    SDL_SetWindowTitle(state->windows[0], "TITLE");
     for (i = 1; i < argc;) {
         int consumed;
 
