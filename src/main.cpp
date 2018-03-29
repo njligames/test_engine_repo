@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include <iostream>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten/emscripten.h>
@@ -182,9 +181,6 @@ loop()
     int i;
     SDL_Event event;
 
-    Uint32 then, now, frames=1;
-    then = SDL_GetTicks();
-
     /* Check for events */
     while (SDL_PollEvent(&event)) {
         SDLTest_CommonEvent(state, &event, &done);
@@ -202,14 +198,6 @@ loop()
 
         SDL_RenderPresent(renderer);
     }
-
-    /* Print out some timing information */
-    now = SDL_GetTicks();
-    if (now > then) {
-        double fps = ((double) frames * 1000) / (now - then);
-        SDL_Log("%2.2f frames per second\n", fps);
-    }
-
 #ifdef __EMSCRIPTEN__
     if (done) {
         emscripten_cancel_main_loop();
@@ -234,7 +222,6 @@ main(int argc, char *argv[])
     if (!state) {
         return 1;
     }
-    SDL_SetWindowTitle(state->windows[0], "TITLE");
     for (i = 1; i < argc;) {
         int consumed;
 
@@ -275,7 +262,6 @@ main(int argc, char *argv[])
         }
         i += consumed;
     }
-
     if (!SDLTest_CommonInit(state)) {
         return 2;
     }
@@ -317,3 +303,4 @@ main(int argc, char *argv[])
 }
 
 /* vi: set ts=4 sw=4 expandtab: */
+
