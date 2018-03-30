@@ -7,4 +7,8 @@ file(GLOB SOURCE_FILES
 file(GLOB MAIN_FILES
   ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/main/main.cpp
   )
-
+file(GLOB INCLUDE_FILES
+  ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/include/*.h
+  ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/include/*.hpp
+  ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/include/*.hxx
+  )
