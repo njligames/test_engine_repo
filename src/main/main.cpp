@@ -1,14 +1,27 @@
-#include "Engine.h"
+#include "SDL.h"
+
+#include <map>
+#include <string>
+#include <vector>
+
+std::vector<SDL_Joystick *> gGameJoysticks;
+typedef std::map<int, SDL_Joystick *> JoystickMap;
+typedef std::pair<int, SDL_Joystick *> JoystickPair;
+
+JoystickMap gGameJoystickMap;
+
+SDL_Window *gWindow = nullptr;
+SDL_Renderer *gRenderer = nullptr;
+SDL_GLContext gGlContext;
+SDL_DisplayMode gDisplayMode;
+SDL_MouseMotionEvent gLastEvent;
+int gDone = 0;
+int gXOffset = 0;
+int gYOffset = 0;
+int gNumTouches = 1;
+
 int main(int argc, char *argv[])
 {
-#if (defined(__MACOSX__) && __MACOSX__)
-    if (argc > 1)
-    {
-        //        setRunningPath(argv[1]);
-        setScriptDir(argv[1]);
-    }
-#endif
-    
     /* initialize SDL */
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
     {
@@ -65,7 +78,7 @@ int main(int argc, char *argv[])
                      );
     
 #if defined(__MACOSX__)
-    createRenderer();
+//    createRenderer();
 #endif
     
     // SDL_SetWindowSize(gWindow, 100, 100);
