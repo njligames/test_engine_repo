@@ -16,9 +16,15 @@
 #ifndef TREASUREHUNT_APP_SRC_MAIN_JNI_TREASUREHUNTRENDERER_H_  // NOLINT
 #define TREASUREHUNT_APP_SRC_MAIN_JNI_TREASUREHUNTRENDERER_H_  // NOLINT
 
+#if defined(EGL)
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
-#include <jni.h>
+#else
+#import <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES2/gl.h>
+#endif
+
+//#include <jni.h>
 
 #include <memory>
 #include <string>
