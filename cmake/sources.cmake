@@ -1,6 +1,7 @@
 # General source files
 file(GLOB SOURCE_FILES
   ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/*.c
+  ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/*.cc
   ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/*.cpp
   ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/*.cxx
   )
