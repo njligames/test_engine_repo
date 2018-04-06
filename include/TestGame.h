@@ -10,10 +10,9 @@
 
 #include "TestGame.h"
 
-extern SDLGameInterface *const gInterface;
-
 class TestGame : public SDLGame
 {
+public:
     virtual bool start(int argc, char **argv)override
     {
         return false;
