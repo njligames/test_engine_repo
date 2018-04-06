@@ -18,7 +18,7 @@ if(OCULUS)
   file(GLOB MAIN_FILES
     ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/main/oculus_rift_sdl2_opengl_demo.cpp
     )
-else(GVR)
+elseif(GVR)
   file(GLOB MAIN_FILES
     ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/src/main/gvr_main.cpp
     )
