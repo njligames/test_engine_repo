@@ -56,68 +56,217 @@ public:
     bool start(int argc, char **argv)
     {
         bool ret = true;
-        std::for_each(mGames.begin(), mGames.end(), [argc, argv, &ret](SDLGame *game)  { bool r = game->start(argc, argv); ret = ret && r; });
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [argc, argv, &ret](SDLGame *game) mutable {
+                          bool r = game->start(argc, argv);
+                          ret = ret && r;
+                      });
         return ret;
     }
-    bool create(){return false;}
-    void destroy(){}
-    void render(){}
-    void update(double timeStep){}
-    void lowMemory(){}
-    void quit(){}
-    void pause(){}
-    void resume(){}
-    void dropFile(const std::string &filename){}
-    void dropText(const std::string &text){}
-    void resize(int width, int height, int sdlFormat, float refreshRate){}
-    int padDown(int device_id, int keycode){return 0;}
-    int padUp(int device_id, int keycode){return 0;}
-    void joy(int device_id, int axis, float value){}
-    void hat(int device_id, int hat_id, int x, int y){}
+    
+    bool create()
+    {
+        bool ret = true;
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [&ret](SDLGame *game)  {
+                          bool r = game->create();
+                          ret = ret && r;
+                      });
+        return ret;
+    }
+    
+    void destroy()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->destroy();});
+    }
+    
+    void render()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->render();});
+    }
+    
+    void update(double timeStep)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [timeStep](SDLGame *game) {game->update(timeStep);});
+    }
+    
+    void lowMemory()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->lowMemory();});
+    }
+    
+    void quit()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->quit();});
+    }
+    
+    void pause()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->pause();});
+    }
+    
+    void resume()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->resume();});
+    }
+    
+    void dropFile(const std::string &filename)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [filename](SDLGame *game) {game->dropFile(filename);});
+    }
+    
+    void dropText(const std::string &text)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [text](SDLGame *game) {game->dropText(text);});
+    }
+    
+    void resize(int width, int height, int sdlFormat, float refreshRate)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [width, height, sdlFormat, refreshRate](SDLGame *game) {game->resize(width, height, sdlFormat, refreshRate);});
+    }
+    
+    int padDown(int device_id, int keycode)
+    {
+        int ret = 1;
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [device_id, keycode, &ret](SDLGame *game)  {
+                          int r = game->padDown(device_id, keycode);
+                          ret = ret && r;
+                      });
+        return ret;
+    }
+    
+    int padUp(int device_id, int keycode)
+    {
+        int ret = 1;
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [device_id, keycode, &ret](SDLGame *game) {
+                          int r = game->padUp(device_id, keycode);
+                          ret = ret && r;
+                      });
+        return ret;
+    }
+    
+    void joy(int device_id, int axis, float value)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [device_id, axis, value](SDLGame *game) {game->joy(device_id, axis, value);});
+    }
+    
+    void hat(int device_id, int hat_id, int x, int y)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [device_id, hat_id, x, y](SDLGame *game) {game->hat(device_id, hat_id, x, y);});
+    }
+    
     void keyDown(const std::string &keycodeName, bool withCapsLock,
                  bool withControl, bool withShift, bool withAlt,
-                 bool withGui){}
+                 bool withGui)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [keycodeName, withCapsLock, withControl, withShift, withAlt, withGui](SDLGame *game) {game->keyDown(keycodeName, withCapsLock, withControl, withShift, withAlt, withGui);});
+    }
+    
     void keyUp(const std::string &keycodeName, bool withCapsLock,
                bool withControl, bool withShift, bool withAlt,
-               bool withGui){}
-    void keyboardFocusLost(){}
-    void mouse(int button, int eventType, float x, float y, int clicks){}
+               bool withGui)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [keycodeName, withCapsLock, withControl, withShift, withAlt, withGui](SDLGame *game) {game->keyUp(keycodeName, withCapsLock, withControl, withShift, withAlt, withGui);});
+    }
+    
+    void keyboardFocusLost()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->keyboardFocusLost();});
+    }
+    
+    void mouse(int button, int eventType, float x, float y, int clicks)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [button, eventType, x, y, clicks](SDLGame *game) {game->mouse(button, eventType, x, y, clicks);});
+    }
     
     void touch(int touchDevId, int pointerFingerId, int eventType,
-               float x, float y, float dx, float dy, float pressure){}
-    void finishTouches(){}
+               float x, float y, float dx, float dy, float pressure)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [touchDevId, pointerFingerId, eventType, x, y, dx, dy, pressure](SDLGame *game) {game->touch(touchDevId, pointerFingerId, eventType, x, y, dx, dy, pressure);});
+    }
     
-    void accel(float x, float y, float z){}
+    void finishTouches()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->finishTouches();});
+    }
+    
+    void accel(float x, float y, float z)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [x, y, z](SDLGame *game) {game->accel(x, y, z);});
+    }
+    
     int addJoystick(int device_id, const std::string &name,
                     int is_accelerometer, int nbuttons, int naxes,
-                    int nhats, int nballs){return 0;}
-    int removeJoystick(int device_id){return 0;}
-    std::string getHint(const std::string &name){return std::string();}
+                    int nhats, int nballs)
+    {
+        int ret = 1;
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [device_id, name, is_accelerometer, nbuttons, naxes, nhats, nballs, &ret](SDLGame *game) {
+                          int r = game->addJoystick(device_id, name, is_accelerometer, nbuttons, naxes, nhats, nballs);
+                          ret = ret && r;
+                      });
+        return ret;
+    }
     
-    void commitText(const std::string &text, int newCursorPosition){}
-    void setComposingText(const std::string &text, int newCursorPosition){}
-    void didEnterBackground(){}
-    void willTerminate(){}
-    void willEnterForeground(){}
+    int removeJoystick(int device_id)
+    {
+        int ret = 1;
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [device_id, &ret](SDLGame *game) {
+                          int r = game->removeJoystick(device_id);
+                          ret = ret && r;
+                      });
+        return ret;
+    }
     
+    std::string getHint(const std::string &name)
+    {
+        std::string ret = "";
+        std::for_each(mGames.begin(),
+                      mGames.end(),
+                      [name, &ret](SDLGame *game) {
+                          std::string r = game->getHint(name);
+                          ret = ret + r;
+                      });
+        return ret;
+    }
+    
+    void commitText(const std::string &text, int newCursorPosition)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [text, newCursorPosition](SDLGame *game) {game->commitText(text, newCursorPosition);});
+    }
+    
+    void setComposingText(const std::string &text, int newCursorPosition)
+    {
+        std::for_each(mGames.begin(), mGames.end(), [text, newCursorPosition](SDLGame *game) {game->setComposingText(text, newCursorPosition);});
+    }
+    
+    void didEnterBackground()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->didEnterBackground();});
+    }
+    
+    void willTerminate()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->willTerminate();});
+    }
+    
+    void willEnterForeground()
+    {
+        std::for_each(mGames.begin(), mGames.end(), [](SDLGame *game) {game->willEnterForeground();});
+    }
 };
 SDLGameInterface *SDLGameInterface::sSDLGameInterface = NULL;
 
-static SDLGameInterface *const interface = SDLGameInterface::getInstance();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SDLGameInterface *const gInterface = SDLGameInterface::getInstance();
 
 class Graphics
 {
@@ -129,7 +278,7 @@ public:
     
     void update()
     {
-        interface->render();
+        gInterface->render();
         
         SDL_GL_SwapWindow(_window);
     }
@@ -475,7 +624,7 @@ static void SDLTest_PrintEvent(SDL_Event *event)
 
 static void UpdateFrame(void *param)
 {
-    interface->update(1.0f / ((float)gDisplayMode.refresh_rate));
+    gInterface->update(1.0f / ((float)gDisplayMode.refresh_rate));
     
     Graphics *graphics = (Graphics *)param;
     graphics->update();
@@ -503,7 +652,7 @@ static int EventFilter(void *userdata, SDL_Event *event)
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
             
-            NJLI_HandleMouse(event->button.button, event->type, event->button.x,
+            gInterface->mouse(event->button.button, event->type, event->button.x,
                              event->button.y, event->button.clicks);
             break;
             //#endif
@@ -513,7 +662,7 @@ static int EventFilter(void *userdata, SDL_Event *event)
         case SDL_FINGERMOTION:
         case SDL_FINGERDOWN:
         case SDL_FINGERUP:
-            NJLI_HandleTouch((int)event->tfinger.touchId,
+            gInterface->touch((int)event->tfinger.touchId,
                              (int)event->tfinger.fingerId, event->type,
                              event->tfinger.x, event->tfinger.y, event->tfinger.dx,
                              event->tfinger.dy, event->tfinger.pressure);
@@ -525,7 +674,7 @@ static int EventFilter(void *userdata, SDL_Event *event)
     
 #if ((defined(__IPHONEOS__) && __IPHONEOS__) ||                                \
 (defined(__ANDROID__) && __ANDROID__))
-    NJLI_HandleFinishTouches();
+    gInterface->finishTouches();
 #endif
     
     return 1;
@@ -612,7 +761,7 @@ static void handleInput()
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
                 
-                interface->mouse(event.button.button, event.type, event.button.x,
+                gInterface->mouse(event.button.button, event.type, event.button.x,
                                  event.button.y, event.button.clicks);
                 break;
 #endif
@@ -621,7 +770,7 @@ static void handleInput()
             case SDL_FINGERMOTION:
             case SDL_FINGERDOWN:
             case SDL_FINGERUP:
-                interface->touch((int)event.tfinger.touchId,
+                gInterface->touch((int)event.tfinger.touchId,
                                  (int)event.tfinger.fingerId, event.type,
                                  event.tfinger.x, event.tfinger.y, event.tfinger.dx,
                                  event.tfinger.dy, event.tfinger.pressure);
@@ -634,24 +783,24 @@ static void handleInput()
                 SDL_iPhoneSetAnimationCallback(gWindow, 1, UpdateFrame,
                                                gGraphics.get());
 #endif
-                interface->resume();
+                gInterface->resume();
                 break;
                 
             case SDL_APP_DIDENTERBACKGROUND:
                 SDL_Log("SDL_APP_DIDENTERBACKGROUND");
                 
-                interface->didEnterBackground();
+                gInterface->didEnterBackground();
                 break;
                 
             case SDL_APP_LOWMEMORY:
                 SDL_Log("SDL_APP_LOWMEMORY");
-                interface->lowMemory();
+                gInterface->lowMemory();
                 
                 break;
                 
             case SDL_APP_TERMINATING:
                 SDL_Log("SDL_APP_TERMINATING");
-                interface->willTerminate();
+                gInterface->willTerminate();
                 break;
                 
             case SDL_APP_WILLENTERBACKGROUND:
@@ -659,23 +808,23 @@ static void handleInput()
 #if (defined(__IPHONEOS__) && __IPHONEOS__)
                 SDL_iPhoneSetAnimationCallback(gWindow, 1, NULL, gGraphics.get());
 #endif
-                interface->pause();
+                gInterface->pause();
                 break;
                 
             case SDL_APP_WILLENTERFOREGROUND:
                 SDL_Log("SDL_APP_WILLENTERFOREGROUND");
                 
-                interface->willEnterForeground();
+                gInterface->willEnterForeground();
                 break;
                 
             case SDL_WINDOWEVENT:
                 switch (event.window.event)
             {
                 case SDL_WINDOWEVENT_RESTORED:
-                    interface->resume();
+                    gInterface->resume();
                     break;
                 case SDL_WINDOWEVENT_MINIMIZED:
-                    interface->pause();
+                    gInterface->pause();
                     break;
                 case SDL_WINDOWEVENT_RESIZED:
                 case SDL_WINDOWEVENT_SIZE_CHANGED:
@@ -686,7 +835,7 @@ static void handleInput()
 #else
                     SDL_GL_GetDrawableSize(gWindow, &w, &h);
 #endif
-                    interface->resize(w, h, gDisplayMode.format,
+                    gInterface->resize(w, h, gDisplayMode.format,
                                       gDisplayMode.refresh_rate);
                 }
                     break;
@@ -719,7 +868,7 @@ static void handleInput()
                 bool withAlt = !!(event.key.keysym.mod & KMOD_ALT);
                 bool withGui = !!(event.key.keysym.mod & KMOD_GUI);
                 
-                interface->keyUp(SDL_GetScancodeName(event.key.keysym.scancode),
+                gInterface->keyUp(SDL_GetScancodeName(event.key.keysym.scancode),
                                  withCapsLock, withControl, withShift, withAlt,
                                  withGui);
             }
@@ -736,7 +885,7 @@ static void handleInput()
                 bool withAlt = !!(event.key.keysym.mod & KMOD_ALT);
                 bool withGui = !!(event.key.keysym.mod & KMOD_GUI);
                 
-                interface->keyDown(SDL_GetScancodeName(event.key.keysym.scancode),
+                gInterface->keyDown(SDL_GetScancodeName(event.key.keysym.scancode),
                                    withCapsLock, withControl, withShift, withAlt,
                                    withGui);
                 
@@ -1066,7 +1215,7 @@ static void handleInput()
             }
             case SDL_QUIT:
                 
-                interface->quit();
+                gInterface->quit();
                 
                 break;
                 
@@ -1085,14 +1234,14 @@ static void handleInput()
             case SDL_DROPFILE:
             {
                 char *dropped_filedir = event.drop.file;
-                interface->dropFile(dropped_filedir);
+                gInterface->dropFile(dropped_filedir);
                 SDL_free(dropped_filedir);
             }
                 break;
             case SDL_DROPTEXT:
             {
                 char *dropped_filedir = event.drop.file;
-                interface->dropText(dropped_filedir);
+                gInterface->dropText(dropped_filedir);
                 SDL_free(dropped_filedir);
             }
                 break;
@@ -1133,7 +1282,7 @@ static void mainloop()
     
 #if defined(__EMSCRIPTEN__) || defined(__ANDROID__)
     
-    NJLI_HandleResize(gDisplayMode.w, gDisplayMode.h, gDisplayMode.format,
+    gInterface->resize(gDisplayMode.w, gDisplayMode.h, gDisplayMode.format,
                       gDisplayMode.refresh_rate);
     
 #endif
@@ -1450,7 +1599,7 @@ int main(int argc, char **argv)
 //        cerr << "Error initializing OpenGL" << endl;
 //        return 1;
 //    }
-    if(!interface->create())
+    if(!gInterface->create())
     {
         return 1;
     }
@@ -1482,11 +1631,11 @@ int main(int argc, char **argv)
     //    SDL_GL_GetDrawableSize(gWindow, &w, &h);
     //#endif
     //#if defined(__EMSCRIPTEN__)
-    interface->resize(drawableW, drawableH, gDisplayMode.format,
+    gInterface->resize(drawableW, drawableH, gDisplayMode.format,
                       gDisplayMode.refresh_rate);
     //#endif
     
-    gDone = (interface->start(argc, argv) == false) ? 1 : 0;
+    gDone = (gInterface->start(argc, argv) == false) ? 1 : 0;
     
 #if defined(__EMSCRIPTEN__)
     emscripten_set_main_loop(mainloop, 0, 0);
@@ -1501,7 +1650,7 @@ int main(int argc, char **argv)
 #endif
     }
     
-    interface->destroy();
+    gInterface->destroy();
     
 #endif
     
