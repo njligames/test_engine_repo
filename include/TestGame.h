@@ -9,9 +9,12 @@
 #define TestGame_h
 
 #include "TestGame.h"
+#include "treasure_hunt_renderer.hh"
 
 class TestGame : public SDLGame
 {
+    gvr_context *_gvrContext;
+    std::unique_ptr<TreasureHuntRenderer> _renderer;
 public:
     virtual bool start(int argc, char **argv)override
     {
@@ -20,7 +23,18 @@ public:
     
     virtual bool create()override
     {
-        return false;
+        // Create GVR context.
+        _gvrContext = gvr_create();
+        
+        // Create GVR Audio context.
+//        std::unique_ptr<gvr::AudioApi> audio_context(new gvr::AudioApi);
+//        audio_context->Init(GVR_AUDIO_RENDERING_BINAURAL_HIGH_QUALITY);
+        
+        // Initialize TreasureHuntRenderer.
+//        _renderer.reset(new TreasureHuntRenderer(_gvrContext, std::move(audio_context)));
+        _renderer.reset(new TreasureHuntRenderer(_gvrContext));
+        _renderer->InitializeGl();
+        return true;
         
     }
     
@@ -31,7 +45,7 @@ public:
     
     virtual void render()override
     {
-        
+        _renderer->DrawFrame();
     }
     
     virtual void update(double timeStep)override
@@ -51,12 +65,12 @@ public:
     
     virtual void pause()override
     {
-        
+        _renderer->OnPause();
     }
     
     virtual void resume()override
     {
-        
+        _renderer->OnResume();
     }
     
     virtual void dropFile(const std::string &filename)override
@@ -121,7 +135,7 @@ public:
     virtual void touch(int touchDevId, int pointerFingerId, int eventType,
                        float x, float y, float dx, float dy, float pressure)override
     {
-        
+        _renderer->OnTriggerEvent();
     }
     
     virtual void finishTouches()override

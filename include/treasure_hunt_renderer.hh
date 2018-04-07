@@ -38,8 +38,7 @@ public:
      * @param gvr_api The (non-owned) gvr_context.
      * @param gvr_audio_api The (owned) gvr::AudioApi context.
      */
-    TreasureHuntRenderer(gvr_context* gvr_context,
-                         std::unique_ptr<gvr::AudioApi> gvr_audio_api);
+    TreasureHuntRenderer(gvr_context* gvr_context);
     
     /**
      * Destructor.
@@ -133,7 +132,7 @@ private:
     void LoadAndPlayCubeSound();
     
     std::unique_ptr<gvr::GvrApi> gvr_api_;
-    std::unique_ptr<gvr::AudioApi> gvr_audio_api_;
+//    std::unique_ptr<gvr::AudioApi> gvr_audio_api_;
     std::unique_ptr<gvr::BufferViewportList> viewport_list_;
     std::unique_ptr<gvr::SwapChain> swapchain_;
     gvr::BufferViewport scratch_viewport_;
@@ -182,11 +181,11 @@ private:
     float object_distance_;
     float floor_depth_;
     
-    gvr::AudioSourceId audio_source_id_;
+//    gvr::AudioSourceId audio_source_id_;
     
     gvr::AudioSourceId success_source_id_;
     
-    std::thread audio_initialization_thread_;
+//    std::thread audio_initialization_thread_;
 };
 
 #endif  // TREASUREHUNT_APP_SRC_MAIN_JNI_TREASUREHUNTRENDERER_H_  // NOLINT
