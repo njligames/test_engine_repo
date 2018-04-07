@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "treasure_hunt_renderer.h"  // NOLINT
-#include "treasure_hunt_shaders.h"  // NOLINT
+#include "treasure_hunt_renderer.hh"  // NOLINT
+#include "treasure_hunt_shaders.hh"  // NOLINT
 
 #include <android/log.h>
 #include <assert.h>
