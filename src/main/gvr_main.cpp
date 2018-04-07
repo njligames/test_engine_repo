@@ -402,7 +402,7 @@ static int EventFilter(void *userdata, SDL_Event *event)
     //    NJLI_HandleStartTouches();
     //#endif
     
-    njli::NJLIGameEngine::handleEvent(&event);
+//    njli::NJLIGameEngine::handleEvent(&event);
     //    SDLTest_PrintEvent(event);
     
     Uint32 eventType = event->type;
