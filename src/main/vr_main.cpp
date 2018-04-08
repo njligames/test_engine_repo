@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+#import <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES2/gl.h>
+
 std::vector<SDL_Joystick *> gGameJoysticks;
 typedef std::map<int, SDL_Joystick *> JoystickMap;
 typedef std::pair<int, SDL_Joystick *> JoystickPair;
@@ -19,6 +22,7 @@ int gDone = 0;
 int gXOffset = 0;
 int gYOffset = 0;
 int gNumTouches = 1;
+float gPointSizeScale = 1.0f;
 
 #include "SDLGameInterface.h"
 
@@ -41,7 +45,23 @@ public:
     
     void update()
     {
+#if defined(VR)
+        float width = gDisplayMode.w * gPointSizeScale;
+        float height = gDisplayMode.h * gPointSizeScale;
+        
+        float hw = width * 0.5;
+        float hh = height * 0.5;
+        
+        glViewport(0, 0, 1360, 1732);
+        glScissor(0, 0, 1360, 1732);
         gInterface->render();
+        
+        glViewport(1360, 0, 1360, 1732);
+        glScissor(1360, 0, 1360, 1732);
+        gInterface->render();
+#else
+        gInterface->render();
+#endif
         
         SDL_GL_SwapWindow(_window);
     }
@@ -1375,19 +1395,18 @@ int main(int argc, char **argv)
     
     int drawableW, drawableH;
     int screen_w, screen_h;
-    float pointSizeScale;
     
     /* The window size and drawable size may be different when highdpi is
      * enabled,
      * due to the increased pixel density of the drawable. */
     SDL_GetWindowSize(gWindow, &screen_w, &screen_h);
-    //    SDL_GL_GetDrawableSize(gWindow, &drawableW, &drawableH);
-    drawableW = gDisplayMode.w;
-    drawableH = gDisplayMode.h;
+        SDL_GL_GetDrawableSize(gWindow, &drawableW, &drawableH);
+//    drawableW = gDisplayMode.w;
+//    drawableH = gDisplayMode.h;
     
     /* In OpenGL, point sizes are always in pixels. We don't want them looking
      * tiny on a retina screen. */
-    pointSizeScale = (float)drawableH / (float)screen_h;
+    gPointSizeScale = (float)drawableH / (float)screen_h;
     
     //#if defined(__MACOSX__)
     //    SDL_GetWindowSize(gWindow, &w, &h);
