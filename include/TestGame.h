@@ -18,7 +18,7 @@ class TestGame : public SDLGame
 public:
     virtual bool start(int argc, char **argv)override
     {
-        return false;
+        return true;
     }
     
     virtual bool create()override
