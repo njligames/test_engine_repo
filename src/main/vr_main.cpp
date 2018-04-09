@@ -290,6 +290,12 @@ static void SDLTest_PrintEvent(SDL_Event *event)
                     event->jaxis.which, event->jaxis.axis, event->jaxis.value);
         }
             break;
+        case SDL_JOYDEVICEMOTION:
+            SDL_Log("SDL EVENT: Joystick %d: m11 %f, m12 %f, m13 %f, m21 %f, m22 %f, m23 %f, m31 %f, m32 %f, m33 %f",
+                    event->jmotion.which,
+                    event->jmotion.m11, event->jmotion.m12, event->jmotion.m13,
+                    event->jmotion.m21, event->jmotion.m22, event->jmotion.m23,
+                    event->jmotion.m31, event->jmotion.m32, event->jmotion.m33);
         case SDL_JOYHATMOTION:
         {
             const char *position = "UNKNOWN";
@@ -535,7 +541,7 @@ static void handleInput()
     while (SDL_PollEvent(&event))
     {
 //        njli::NJLIGameEngine::handleEvent(&event);
-        //        SDLTest_PrintEvent(&event);
+                SDLTest_PrintEvent(&event);
         switch (event.type)
         {
                 
