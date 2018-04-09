@@ -3,6 +3,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <memory>
 
 #if defined(__IPHONEOS__)
 #import <OpenGLES/ES2/glext.h>
@@ -10,7 +12,7 @@
 #endif
 
 #if defined(__ANDROID__)
-#define GL_GLEXT_PROTOTYPES
+// #define GL_GLEXT_PROTOTYPES
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #include <GLES2/gl2platform.h>
