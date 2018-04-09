@@ -9,6 +9,7 @@
 #define SDLGameInterface_h
 
 #include "SDLGame.h"
+#include <algorithm>
 
 class SDLGameInterface
 {
