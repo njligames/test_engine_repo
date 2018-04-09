@@ -4,8 +4,17 @@
 #include <string>
 #include <vector>
 
+#if defined(__IPHONEOS__)
 #import <OpenGLES/ES2/glext.h>
 #import <OpenGLES/ES2/gl.h>
+#endif
+
+#if defined(__ANDROID__)
+#define GL_GLEXT_PROTOTYPES
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include <GLES2/gl2platform.h>
+#endif
 
 std::vector<SDL_Joystick *> gGameJoysticks;
 typedef std::map<int, SDL_Joystick *> JoystickMap;
