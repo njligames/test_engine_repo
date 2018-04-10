@@ -24,3 +24,6 @@ file(GLOB INCLUDE_FILES
   ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/include/*.hpp
   ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/include/*.hxx
   )
+
+# General includes
+include_directories(${${CMAKE_PROJECT_NAME}_BINARY_DIR}/include ${${CMAKE_PROJECT_NAME}_REPO_DIRECTORY}/include)
